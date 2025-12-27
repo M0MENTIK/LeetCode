@@ -23,31 +23,20 @@
 
 class Solution {
 public:
-    int bestClosingTime(std::string customers) {
-        bool closed {false};
-        int closedHours{0};
-        int penalty {0};
-        int index {0};
-        int penaltyMin {static_cast<int>(customers.size())};
-
-        for(int i=0; i<=customers.size(); ++i, closed = false) {
-            for(int j=0; j<=customers.size(); ++j) {
-                if (closedHours <= j) {
-                    closed = true;
-                }
-                if ((customers[j] == 'Y' and closed) or (customers[j] == 'N' and !closed)) {
-                    penalty+=1;
-                }
-            }
-            closedHours++;
-            if(penaltyMin > penalty) {
+    int bestClosingTime(std::string customers) { 
+        int penalty{0};
+        int penaltyMin{penalty};
+        int indexMin{0};
+    
+        for (int i = 1; i <= customers.size(); ++i) {
+            int y = customers[i-1] == 'Y' ? 1 : -1;
+            penalty -= y;
+            if (penaltyMin > penalty) {
                 penaltyMin = penalty;
-                index = i;
-
+                indexMin = i;
             }
-            penalty = 0;
         }
-        return index;    
+        return indexMin;
     }
 };
 
